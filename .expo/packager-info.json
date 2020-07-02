@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19004,
-  "packagerPid": 2576,
+  "packagerPort": 19001,
+  "packagerPid": 3628,
   "webpackServerPort": null,
   "expoServerNgrokUrl": "https://6u-uzg.k-kokom.bus-app.exp.direct",
   "packagerNgrokUrl": "https://packager.6u-uzg.k-kokom.bus-app.exp.direct",
-  "ngrokPid": 10576
+  "ngrokPid": 1488
 }
