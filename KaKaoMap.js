@@ -1,12 +1,23 @@
 import React from "react";
-import {View, Text, StyleSheet, Dimensions } from "react-native";
+import {View, Text, StyleSheet, Image, Alert } from "react-native";
 import PropTypes from "prop-types";
 import MapView, { Marker } from "react-native-maps";
+import Marker_Image from "./marker.png";
+import axios from "axios";
 
-const API_KEY = "1e01caddfd42eef0c0788411547967f4";
+const API_KEY = "1234567890";
 
+getData = async(Keyword) => {
+    const Find_Keyword = Keyword;
+    const { data } = await axios.get(`http://openapi.gbis.go.kr/ws/rest/busstationservice?serviceKey=${API_KEY}&keyword=${Find_Keyword}`);
+    console.log(data);
+}
 export default function Viewmap({lati, long}){
-    
+    try {
+        this.getData("수원전통문화관");
+    } catch (error) {
+        Alert.alert("에러");
+    }    
     return <View style ={ styles.container }>
         <View style = {styles.mapStyle}>
             <MapView style = {styles.map}
@@ -16,13 +27,32 @@ export default function Viewmap({lati, long}){
             >
                 <Marker
                     coordinate={{
-                        latitude: lati,
-                        longitude: long
+                        latitude: 37.26025,
+                        longitude: 127.0314833
                     }}
-                    //image={require('assets/Map_Marker.png')}
                     title="미디어코어"
                     description="회사"
-                />
+                    >
+                    <Image
+                        source={Marker_Image}
+                        style={{width: 26, height: 28}}
+                        resizeMode="contain"
+                    />
+                </Marker>
+                <Marker
+                    coordinate={{
+                        latitude: 37.2865833,
+                        longitude: 127.0151
+                    }}
+                    title="미디어코어"
+                    description="회사"
+                    >
+                    <Image
+                        source={Marker_Image}
+                        style={{width: 26, height: 28}}
+                        resizeMode="contain"
+                    />
+                </Marker>
             </MapView>
         </View>
         <View style = {styles.text}>
