@@ -12,8 +12,26 @@ getData = async(Keyword) => {
     const { data } = await axios.get(`http://openapi.gbis.go.kr/ws/rest/busstationservice?serviceKey=${API_KEY}&keyword=${Find_Keyword}`);
     console.log(data);
 }
+
+function Marking_Station({lati, long}){
+    return (<MapView.Marker
+        coordinate={{
+            latitude: lati,
+            longitude: long
+        }}
+        title="수원전통문화관"
+        description="정류장"
+        >
+        <Image
+            source={Marker_Image}
+            style={{width: 26, height: 28}}
+            resizeMode="contain"
+        />
+    </MapView.Marker>)
+};
 export default function Viewmap({lati, long}){
     try {
+        this.Marking_Station(127.0314833, 37.26025);
         this.getData("수원전통문화관");
     } catch (error) {
         Alert.alert("에러");
@@ -23,37 +41,8 @@ export default function Viewmap({lati, long}){
             <MapView style = {styles.map}
                 initialRegion = {{latitude: lati, longitude: long, latitudeDelta: 0.0922, longitudeDelta: 0.0421}}
                 showsUserLocation
-                followsUserLocation
-            >
-                <Marker
-                    coordinate={{
-                        latitude: 37.26025,
-                        longitude: 127.0314833
-                    }}
-                    title="미디어코어"
-                    description="회사"
-                    >
-                    <Image
-                        source={Marker_Image}
-                        style={{width: 26, height: 28}}
-                        resizeMode="contain"
-                    />
-                </Marker>
-                <Marker
-                    coordinate={{
-                        latitude: 37.2865833,
-                        longitude: 127.0151
-                    }}
-                    title="미디어코어"
-                    description="회사"
-                    >
-                    <Image
-                        source={Marker_Image}
-                        style={{width: 26, height: 28}}
-                        resizeMode="contain"
-                    />
-                </Marker>
-            </MapView>
+                //followsUserLocation
+            />
         </View>
         <View style = {styles.text}>
             <Text>{lati}</Text>
