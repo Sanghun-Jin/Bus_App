@@ -1,8 +1,8 @@
 import React from "react";
 import { Alert } from "react-native";
 import Loading from "./Loading";
+import ViewMap from "./KaKaoMap"
 import * as Location from "expo-location";
-import ViewMap from "./KaKaoMap";
 
 export default class extends React.Component {
   state = {
@@ -11,11 +11,11 @@ export default class extends React.Component {
   location = {
     latitude: 0,
     longitude: 0
-  }
+  };
   setlocation = async (latitude, longitude) => {
    this.latitude = latitude;
    this.longitude = longitude;
-  }
+  };
   getLocation = async () => {
     try {
       await Location.requestPermissionsAsync();
