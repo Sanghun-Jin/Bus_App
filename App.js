@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Image, MapView } from "react-native";
+import { Alert } from "react-native";
 import Loading from "./Loading";
 import ViewMap from "./KaKaoMap"
 import * as Location from "expo-location";
@@ -12,7 +12,6 @@ export default class extends React.Component {
     latitude: 0,
     longitude: 0
   };
-  
   setlocation = async (latitude, longitude) => {
    this.latitude = latitude;
    this.longitude = longitude;
