@@ -7,33 +7,35 @@ import axios from "axios";
 
 const API_KEY = "1234567890";
 
-Marking_BusStop = async(lati, long, tit) => {
-    return(<Viewmap.MapView.Marker
+class BusData
+{
+    Marking_BusStop = async(lati, long, tit) => {
+        return(<Viewmap.MapView.Marker
         coordinate = {{latitude: lati, longitude: long}}
         title = {tit}
-    >
-        <Image source={Marker_Image} style={{width: 30, height: 30}} />
-    </Viewmap.MapView.Marker>
-    );
-};
+        >
+            <Image source={Marker_Image} style={{width: 30, height: 30}} />
+        </Viewmap.MapView.Marker>
+        );
+    };
 
-getBusRoute = async(routeID) => {
-    const { BusRouteData } = await axios.get(`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&routeId=${routeID}`);
-};
+    getBusRoute = async(routeID) => {
+        const { BusRouteData } = await axios.get(`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&routeId=${routeID}`);
+    };
 
-function getComeBus(){
-    const { ComeBusData } = axios.get(`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&stationId=202000230`);
-    console.log(ComeBusData)
-    /*for(var i = 0;; i++){
-        if(ComeBusData[i].stationSeq == (i + 1)){
-            getBusRoute(ComeBusData[i].routeId)
-            Marking_BusStop(BusRouteData.x, BusRouteData.y, BusRouteData.stationName)
-        }
-    };*/
-};
-
+    getComeBus = async() => {
+        const { ComeBusData } = await axios.get(`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&stationId=202000230`);
+        console.log(ComeBusData)
+        /*for(var i = 0;; i++){
+            if(ComeBusData[i].stationSeq == (i + 1)){
+                getBusRoute(ComeBusData[i].routeId)
+                Marking_BusStop(BusRouteData.x, BusRouteData.y, BusRouteData.stationName)
+            }
+        };*/
+    };
+}
 export default function Viewmap({lati, long}){
-    getComeBus()
+    //BusData.getComeBus()
     return <View style ={ styles.container }>
         <View style = {styles.mapStyle}>
             <MapView style = {styles.map}
