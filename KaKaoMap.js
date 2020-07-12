@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
 import Marker_Image from './marker.png';
 import axios from 'axios';
+import { render } from 'react-dom';
 
 const API_KEY =
 	'mBfTDcuyQo%2BUjXTESvcKm6%2FKtP3CoECKspX7%2Boc9A%2FB7U1qqsA6I%2BbpWhjnbu%2FSdMXczS7wGh4x5MJPG%2FioBDA%3D%3D';
 
-class BusData {
-	Marking_BusStop = async (lati, long, tit) => {
+class BusData extends Component {
+	/*Marking_BusStop = async (lati, long, tit) => {
 		return (
 			<Viewmap.MapView.Marker
 				coordinate={{ latitude: lati, longitude: long }}
@@ -24,24 +25,42 @@ class BusData {
 		const { BusRouteData } = axios.get(
 			`http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=${API_KEY}&routeId=${routeID}`,
 		);
-	};
+	};*/
+	constructor(props) {
+		super(props);
+		this.state = { children: [] };
+	}
 
-	getComeBus = () => {
-		const { ComeBusData } = axios.get(
-			`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&stationId=202000230`,
-		);
-		console.log(ComeBusData);
-		/*for(var i = 0;; i++){
+	test = () => {
+		axios
+			.get(`https://www.reddit.com/.json?sort=new&limit=10`)
+			.then((response) => {
+				this.setState({ children: response.data.data.children });
+			});
+		console.log(this.state.children);
+	};
+	/*
+	getComeBus = () => {		
+		axios
+			.get(
+				`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&stationId=202000230`,
+			)
+			.then((response) => {
+				this.setState({ data: response.msgBody.busRouteStationList });
+			});
+		console.log(this.state.data);
+		for(var i = 0;; i++){
             if(ComeBusData[i].stationSeq == (i + 1)){
                 getBusRoute(ComeBusData[i].routeId)
                 Marking_BusStop(BusRouteData.x, BusRouteData.y, BusRouteData.stationName)
             }
-        };*/
-	};
+        };
+	};*/
 }
+
 export default function Viewmap({ lati, long }) {
-	const busdata = new BusData();
-	busdata.getComeBus();
+	const bus = new BusData();
+	bus.test();
 	return (
 		<View style={styles.container}>
 			<View style={styles.mapStyle}>
