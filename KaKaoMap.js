@@ -22,7 +22,7 @@ class BusData {
 
 	getBusRoute = (routeID) => {
 		const { BusRouteData } = axios.get(
-			`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&routeId=${routeID}`,
+			`http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=${API_KEY}&routeId=${routeID}`,
 		);
 	};
 
