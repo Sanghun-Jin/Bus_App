@@ -26,19 +26,22 @@ class BusData extends Component {
 			`http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=${API_KEY}&routeId=${routeID}`,
 		);
 	};*/
-	constructor(props) {
-		super(props);
-		this.state = { children: [] };
-	}
 
-	test = () => {
+    test = () => {
 		axios
 			.get(`https://www.reddit.com/.json?sort=new&limit=10`)
 			.then((response) => {
-				this.setState({ children: response.data.data.children });
-			});
-		console.log(this.state.children);
+                console.log(response.data)
+                const {data} = response.data.data.children[1]
+                console.log(data)
+            })            
 	};
+
+    componentDidMount() {
+        this.test()
+    }
+
+	
 	/*
 	getComeBus = () => {		
 		axios
@@ -49,7 +52,7 @@ class BusData extends Component {
 				this.setState({ data: response.msgBody.busRouteStationList });
 			});
 		console.log(this.state.data);
-		for(var i = 0;; i++){
+		for(let i = 0;; i++){
             if(ComeBusData[i].stationSeq == (i + 1)){
                 getBusRoute(ComeBusData[i].routeId)
                 Marking_BusStop(BusRouteData.x, BusRouteData.y, BusRouteData.stationName)
