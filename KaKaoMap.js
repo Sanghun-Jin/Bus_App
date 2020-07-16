@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Marker_Image from './marker.png';
 import axios from 'axios';
 
@@ -9,17 +9,10 @@ var DOMParser = require('xmldom').DOMParser;
 
 const API_KEY = '1234567890';
 const ALLBus = [];
+
 class BusData extends Component {
-	Marking_BusStop = async (lati, long, tit) => {
-		return (
-			<Viewmap.MapView.Marker
-				coordinate={{ latitude: lati, longitude: long }}
-				title={tit}
-			>
-				<Image source={Marker_Image} style={{ width: 30, height: 30 }} />
-			</Viewmap.MapView.Marker>
-		);
-	};
+	Marking_BusStop = (lati, long, tit) => {};
+
 	getbusroute = (busname, busroute) => {
 		axios
 			.get(
@@ -27,20 +20,24 @@ class BusData extends Component {
 			)
 			.then((response) => {
 				const { data } = response;
-				let Bus = [];
 				let XmlDoc = new DOMParser().parseFromString(data, 'text/xml');
 				let x = XmlDoc.getElementsByTagName('x');
 				let y = XmlDoc.getElementsByTagName('y');
 				let stationName = XmlDoc.getElementsByTagName('stationName');
+				let BusStationName = [];
+				let BusX = [];
+				let BusY = [];
+				let BusALLData = [];
 				for (let i = 0; i < x.length; i++) {
-					Bus.push(
-						stationName[i].firstChild.data,
-						x[i].firstChild.data,
-						y[i].firstChild.data,
-					);
-					ALLBus.push(Bus);
+					BusStationName.push(stationName[i].firstChild.data);
+					BusX.push(x[i].firstChild.data);
+					BusY.push(y[i].firstChild.data);
 				}
-				console.log(ALLBus);
+				BusALLData.push(BusStationName);
+				BusALLData.push(BusX);
+				BusALLData.push(BusY);
+				ALLBus.push(BusALLData);
+				//console.log(ALLBus);
 			});
 	};
 
@@ -62,16 +59,11 @@ class BusData extends Component {
 				}
 			});
 	};
-
-	/*componentDidMount() {
-		this.test();
-	}*/
 }
 
 export default function Viewmap({ lati, long }) {
-	const bus = new BusData();
-	bus.getcomebus();
-
+	const Bus = new BusData();
+	Bus.getcomebus();
 	return (
 		<View style={styles.container}>
 			<View style={styles.mapStyle}>
@@ -86,7 +78,18 @@ export default function Viewmap({ lati, long }) {
 					provider={'google'}
 					showsUserLocation
 					//followsUserLocation
-				/>
+				>
+					<Marker
+						coordinate={{
+							latitude: 37.28675,
+							longitude: 127.0153667,
+						}}
+						title="this is a marker"
+						description="this is a marker example"
+					>
+						<Image source={Marker_Image} style={{ width: 30, height: 30 }} />
+					</Marker>
+				</MapView>
 			</View>
 			<View style={styles.text}>
 				<Text>{lati}</Text>
