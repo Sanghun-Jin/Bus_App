@@ -28,6 +28,7 @@ class BusData extends Component {
 				let BusX = [];
 				let BusY = [];
 				let BusALLData = [];
+				ALLBus.push(busname);
 				for (let i = 0; i < x.length; i++) {
 					BusStationName.push(stationName[i].firstChild.data);
 					BusX.push(x[i].firstChild.data);
@@ -48,6 +49,7 @@ class BusData extends Component {
 			)
 			.then((response) => {
 				const { data } = response;
+				console.log(data);
 				let XmlDoc = new DOMParser().parseFromString(data, 'text/xml');
 				let routeid = XmlDoc.getElementsByTagName('routeId');
 				let routeName = XmlDoc.getElementsByTagName('routeName');
@@ -64,6 +66,10 @@ class BusData extends Component {
 export default function Viewmap({ lati, long }) {
 	const Bus = new BusData();
 	Bus.getcomebus();
+
+	/*this.state = {
+		Markers:
+	};*/
 	return (
 		<View style={styles.container}>
 			<View style={styles.mapStyle}>
