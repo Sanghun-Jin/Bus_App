@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
 import Marker_Image from './marker.png';
 import axios from 'axios';
-import { render } from 'react-dom';
 
-const API_KEY =
-	'mBfTDcuyQo%2BUjXTESvcKm6%2FKtP3CoECKspX7%2Boc9A%2FB7U1qqsA6I%2BbpWhjnbu%2FSdMXczS7wGh4x5MJPG%2FioBDA%3D%3D';
+var DOMParser = require('xmldom').DOMParser;
 
+const API_KEY = '1234567890';
+const ALLBus = [];
 class BusData extends Component {
-	/*Marking_BusStop = async (lati, long, tit) => {
+	Marking_BusStop = async (lati, long, tit) => {
 		return (
 			<Viewmap.MapView.Marker
 				coordinate={{ latitude: lati, longitude: long }}
@@ -20,50 +20,58 @@ class BusData extends Component {
 			</Viewmap.MapView.Marker>
 		);
 	};
-
-	getBusRoute = (routeID) => {
-		const { BusRouteData } = axios.get(
-			`http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=${API_KEY}&routeId=${routeID}`,
-		);
-	};*/
-
-    test = () => {
+	getbusroute = (busname, busroute) => {
 		axios
-			.get(`https://www.reddit.com/.json?sort=new&limit=10`)
+			.get(
+				`http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=${API_KEY}&routeId=${busroute}`,
+			)
 			.then((response) => {
-                console.log(response.data)
-                const {data} = response.data.data.children[1]
-                console.log(data)
-            })            
+				const { data } = response;
+				let Bus = [];
+				let XmlDoc = new DOMParser().parseFromString(data, 'text/xml');
+				let x = XmlDoc.getElementsByTagName('x');
+				let y = XmlDoc.getElementsByTagName('y');
+				let stationName = XmlDoc.getElementsByTagName('stationName');
+				for (let i = 0; i < x.length; i++) {
+					Bus.push(
+						stationName[i].firstChild.data,
+						x[i].firstChild.data,
+						y[i].firstChild.data,
+					);
+					ALLBus.push(Bus);
+				}
+				console.log(ALLBus);
+			});
 	};
 
-    componentDidMount() {
-        this.test()
-    }
-
-	
-	/*
-	getComeBus = () => {		
+	getcomebus = () => {
 		axios
 			.get(
 				`http://openapi.gbis.go.kr/ws/rest/busstationservice/route?serviceKey=${API_KEY}&stationId=202000230`,
 			)
 			.then((response) => {
-				this.setState({ data: response.msgBody.busRouteStationList });
+				const { data } = response;
+				let XmlDoc = new DOMParser().parseFromString(data, 'text/xml');
+				let routeid = XmlDoc.getElementsByTagName('routeId');
+				let routeName = XmlDoc.getElementsByTagName('routeName');
+				for (let i = 0; i < routeid.length; i++) {
+					this.getbusroute(
+						routeName[i].firstChild.data,
+						routeid[i].firstChild.data,
+					);
+				}
 			});
-		console.log(this.state.data);
-		for(let i = 0;; i++){
-            if(ComeBusData[i].stationSeq == (i + 1)){
-                getBusRoute(ComeBusData[i].routeId)
-                Marking_BusStop(BusRouteData.x, BusRouteData.y, BusRouteData.stationName)
-            }
-        };
-	};*/
+	};
+
+	/*componentDidMount() {
+		this.test();
+	}*/
 }
 
 export default function Viewmap({ lati, long }) {
 	const bus = new BusData();
-	bus.test();
+	bus.getcomebus();
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.mapStyle}>
